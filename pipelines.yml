@@ -4,7 +4,7 @@ resources:
     configuration:
       webhookName: jenkinswebhook 
       parameters: token=PIPELINES1
-  - name: myBuildInfo
+  - name: jenkinsBuildInfo
     type: BuildInfo
     configuration:
       buildName: sample_build
@@ -29,7 +29,7 @@ pipelines:
         type: Bash
         configuration:
           inputResources:
-            - name: myBuildInfo
+            - name: jenkinsBuildInfo
         execution:
           onExecute:
             - echo 'Jenkins job triggered Pipelines'   
