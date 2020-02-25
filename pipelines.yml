@@ -1,0 +1,17 @@
+resources:
+  - name: myJenkinsTrigger
+    type: OutgoingWebhook
+    configuration:
+      webhookName: jenkinswebhook 
+      parameters: token=PIPELINES1
+pipelines:
+  - name: jenkins_trigger
+    steps:
+      - name: step_1
+        type: Bash
+        configuration:
+          outputResources:
+            - name: myJenkinsTrigger
+        execution:
+          onExecute:
+            - echo 'Triggered Jenkins job'
