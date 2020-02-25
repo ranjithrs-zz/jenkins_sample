@@ -9,6 +9,7 @@ resources:
     configuration:
       buildName: sample_build
       buildNumber: 1
+      externalCI: rr_jenkins
 pipelines:
   - name: jenkins_trigger
     steps:
