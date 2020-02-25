@@ -21,13 +21,15 @@ pipelines:
         execution:
           onExecute:
             - echo 'Triggered Jenkins job'
+       
+            
+  - name: pipelines_trigger
+    steps:
       - name: step_2
         type: Bash
         configuration:
-          inputSteps:
-            - name: step_1
-          outputResources:
+          inputResources:
             - name: myBuildInfo
         execution:
           onExecute:
-            - echo 'Jenkins job triggered Pipelines'            
+            - echo 'Jenkins job triggered Pipelines'   
