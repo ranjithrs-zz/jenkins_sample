@@ -4,6 +4,11 @@ resources:
     configuration:
       webhookName: jenkinswebhook 
       parameters: token=PIPELINES1
+  - name: myBuildInfo
+    type: BuildInfo
+    configuration:
+      buildName: sample_build
+      buildNumber: 1
 pipelines:
   - name: jenkins_trigger
     steps:
@@ -15,3 +20,13 @@ pipelines:
         execution:
           onExecute:
             - echo 'Triggered Jenkins job'
+      - name: step_2
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: step_1
+          outputResources:
+            - name: myBuildInfo
+        execution:
+          onExecute:
+            - echo 'Jenkins job triggered Pipelines'            
