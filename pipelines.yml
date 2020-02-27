@@ -11,6 +11,34 @@ resources:
       buildName: sample_build
       buildNumber: 1
       externalCI: rr_jenkins
+  - name: myappBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art_demo
+      buildName: maven-example
+      buildNumber: 1      
+  - name: myappBundle
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: dist_demo
+      name: myapp_release_bundle
+      version: 1.0
+  - name: myappSignedBundle
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: dist_demo
+      name: myapp_release_bundle
+      version: 1.0
+  - name: distribution_rules
+    type: DistributionRule
+    configuration:
+      sourceDistribution: dist_demo
+      serviceName: "*"
+      siteName: "*"
+      cityName: "*"
+      countryCodes:
+        - "CN"
+        - "GB"      
 pipelines:
   - name: jenkins_trigger
     steps:
@@ -26,11 +54,48 @@ pipelines:
             
   - name: pipelines_trigger
     steps:
-      - name: step_2
+      - name: sanity_tests
         type: Bash
         configuration:
           inputResources:
             - name: jenkinsBuildInfo
         execution:
           onExecute:
-            - echo 'Jenkins job triggered Pipelines'   
+            - echo 'Tests Completed'   
+            
+      - name: bundle
+        type: CreateReleaseBundle
+        configuration:
+          releaseBundleName: maven_example_rb
+          releaseBundleVersion: v1.0.${run_number}
+          dryRun: false
+          sign: false
+          description: "some random test description"
+          inputResources:
+            - name: myappBuildInfo
+          inputSteps:
+            - name: sanity_tests
+          outputResources:
+            - name: myappBundle
+          releaseNotes:
+            syntax: markdown
+            content: |
+              ## Heading
+                * Bullet
+                * Points
+            
+      - name: sign
+        type: SignReleaseBundle
+        configuration:
+          inputResources:
+            - name: myappBundle
+          outputResources:
+            - name: myappSignedBundle
+
+      - name: distribute
+        type: DistributeReleaseBundle
+        configuration:
+          dryRun: false
+          inputResources:
+            - name: myappSignedBundle
+            - name: distribution_rules
