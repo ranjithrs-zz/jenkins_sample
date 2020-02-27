@@ -16,19 +16,19 @@ resources:
     configuration:
       sourceArtifactory: art_demo
       buildName: maven-example
-      buildNumber: 1      
+      buildNumber: 148      
   - name: myappBundle
     type: ReleaseBundle
     configuration:
       sourceDistribution: dist_demo
       name: myapp_release_bundle
-      version: 1.0
+      version: 1.0.0
   - name: myappSignedBundle
     type: ReleaseBundle
     configuration:
       sourceDistribution: dist_demo
       name: myapp_release_bundle
-      version: 1.0
+      version: 1.0.0
   - name: distribution_rules
     type: DistributionRule
     configuration:
